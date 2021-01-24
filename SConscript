@@ -9,7 +9,8 @@
 import sys
 import os
 import glob
-
+import subprocess
+import re
 
 #########################################################################################
 # Build option
@@ -33,9 +34,18 @@ warn_flags = [
 ]
 warn_flags = ' '.join(warn_flags)
 
+scons_version = subprocess.check_output(['scons', '-v'])
+scons_v3 = re.search(b'v3', scons_version)
 
 ## Environment
-env = Environment()
+if scons_v3:
+  env = Environment()
+else:
+  env = Environment(COMPILATIONDB_USE_ABSPATH=True)
+  env.Tool('compilation_db')
+  if flags.get('compile_db') == '1':
+    env.CompilationDatabase('compile_commands.json')
+
 custom_vars = set(['AS', 'AR', 'CC', 'CXX', 'HOME', 'LD_LIBRARY_PATH', 'PATH', 'RANLIB'])
 
 for key,val in os.environ.items():
@@ -103,7 +113,6 @@ IRIS_srcs = [
   'src/manifold/models/iris/iris_srcs/components/ninterface.cc',
   'src/manifold/models/iris/iris_srcs/components/simpleRouter.cc'
 ]
-
 
 if flags['iris'] == '1':
   if flags['power'] == '1':

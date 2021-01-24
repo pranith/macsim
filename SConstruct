@@ -77,6 +77,7 @@ flags['qsim']          = Config.get('Library', 'qsim', fallback='0')
 flags['debug']         = Config.get('Build', 'debug', fallback='0')
 flags['gprof']         = Config.get('Build', 'gprof', fallback='0')
 flags['pin_3_13_trace'] = Config.get('Build', 'pin_3_13_trace', fallback='0')
+flags['compile_db']    = Config.get('Build', 'compiledb', fallback='0')
 flags['val']           = Config.get('Build_Extra', 'val', fallback='0')
 flags['ramulator']     = Config.get('Library', 'ramulator', fallback='0')
 
